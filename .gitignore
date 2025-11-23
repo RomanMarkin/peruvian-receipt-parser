@@ -1,0 +1,49 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyo
+*.pyd
+*.pyc
+venv/
+env/
+.venv/
+.env/
+.pytest_cache/
+
+# Folders
+uploads/
+tmp/
+model/
+
+# Docker
+*.docker
+*.dockerignore
+Dockerfile
+docker-compose.override.yml
+volumes/
+
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+crash.log
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+.terraformrc
+terraform.rc
+.terraform*.hcl
+
+# IDE
+.idea/
+
+# OS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Logs
+*.log
+logs/
