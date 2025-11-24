@@ -33,7 +33,7 @@ jobs:
           python-version: ${{ env.PYTHON_VERSION }}
 
       - name: Install Validation Dependencies
-        run: pip install huggingface_hub torch transformers sentencepiece protobuf
+        run: pip install huggingface_hub torch transformers pillow sentencepiece protobuf
 
       - name: Download Model
         run: |
