@@ -20,7 +20,7 @@ jobs:
   deploy-production:
     name: Deploy to Production
     runs-on: ubuntu-latest
-    environment: production # Enforces approval rules
+    environment: production
 
     steps:
       - name: Configure AWS Credentials

@@ -20,6 +20,7 @@ jobs:
   build:
     name: Build & Push
     runs-on: ubuntu-latest
+    environment: staging
     outputs:
       image: ${{ steps.build-image.outputs.image }}
 
@@ -77,6 +78,7 @@ jobs:
     name: Deploy to ECS
     needs: build
     runs-on: ubuntu-latest
+    environment: staging
 
     steps:
       - name: Configure AWS Credentials
