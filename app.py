@@ -11,9 +11,7 @@ from pydantic import BaseModel
 from transformers import DonutProcessor, VisionEncoderDecoderModel
 
 # --- Configuration ---
-#MODEL_PATH = os.getenv("MODEL_PATH", "/app/model")
 MODEL_PATH = os.getenv("MODEL_PATH", "./model")
-# Use CUDA if available, otherwise CPU (or MPS for Mac)
 DEVICE = "cuda" if torch.cuda.is_available() else "mps" if torch.backends.mps.is_available() else "cpu"
 
 # --- Global State ---

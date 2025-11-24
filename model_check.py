@@ -1,39 +1,34 @@
-import os
 import sys
+import os
 from transformers import DonutProcessor, VisionEncoderDecoderModel
 
-# Defined in Dockerfile, or defaults to the local path
-MODEL_PATH = os.getenv("MODEL_PATH", "/app/model")
+MODEL_DIR = "./model"
 
-print(f"--- STARTING MODEL SANITY CHECK ---")
-print(f"Checking model at: {MODEL_PATH}")
+print(f"🔍 Validating model in {MODEL_DIR}...")
 
+# 1. Check if the folder exists
+if not os.path.exists(MODEL_DIR):
+    print(f"❌ Error: Directory {MODEL_DIR} does not exist.")
+    sys.exit(1)
+
+# 2. Check for key files presence
+required_files = ["config.json", "pytorch_model.bin", "tokenizer.json", "preprocessor_config.json"]
+# Note: pytorch_model.bin might be also model.safetensors
+files_in_dir = os.listdir(MODEL_DIR)
+print(f"📂 Files found: {files_in_dir}")
+
+# 3. Attempt to load the model (The real corruption test)
 try:
-    # 1. Check if directory exists
-    if not os.path.exists(MODEL_PATH):
-        print(f"ERROR: Model directory not found at {MODEL_PATH}")
-        sys.exit(1)
+    print("⏳ Attempting to load Processor...")
+    processor = DonutProcessor.from_pretrained(MODEL_DIR)
 
-    # 2. Check for critical files
-    required_files = ["config.json", "tokenizer.json", "special_tokens_map.json"]
-    files_in_dir = os.listdir(MODEL_PATH)
-    missing_files = [f for f in required_files if f not in files_in_dir]
+    print("⏳ Attempting to load Model...")
+    model = VisionEncoderDecoderModel.from_pretrained(MODEL_DIR)
 
-    if missing_files:
-        print(f"ERROR: Missing critical model files: {missing_files}")
-        print(f"Found: {files_in_dir}")
-        sys.exit(1)
-
-    # 3. Attempt to load the model into memory
-    print("Attempting to load Processor...")
-    processor = DonutProcessor.from_pretrained(MODEL_PATH)
-
-    print("Attempting to load Model...")
-    model = VisionEncoderDecoderModel.from_pretrained(MODEL_PATH)
-
-    print("SUCCESS: Model loaded correctly.")
+    print("✅ SUCCESS: Model is valid and loadable.")
     sys.exit(0)
 
 except Exception as e:
-    print(f"CRITICAL FAILURE during sanity check: {e}")
+    print(f"❌ CRITICAL FAILURE: Model is corrupt or incompatible.")
+    print(f"Error details: {e}")
     sys.exit(1)
