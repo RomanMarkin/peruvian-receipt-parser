@@ -16,13 +16,6 @@ uploads/
 tmp/
 model/
 
-# Docker
-*.docker
-*.dockerignore
-Dockerfile
-docker-compose.override.yml
-volumes/
-
 # Terraform
 .terraform/
 *.tfstate
