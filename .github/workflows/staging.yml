@@ -25,6 +25,18 @@ jobs:
       image: ${{ steps.build-image.outputs.image }}
 
     steps:
+      - name: Free Disk Space (Ubuntu)
+        uses: jlumbroso/free-disk-space@main
+        with:
+          # Free up space by removing unnecessary pre-installed tools
+          tool-cache: true
+          android: true
+          dotnet: true
+          haskell: true
+          large-packages: true
+          docker-images: true
+          swap-storage: true
+
       - name: Checkout Code
         uses: actions/checkout@v4
 
