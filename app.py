@@ -128,7 +128,17 @@ async def parse_receipt(request: ReceiptRequest):
         return {"error": "JSON parsing failed", "raw_sequence": sequence}
 
 
+@app.get("/health")
+async def health_check():
+    model = ml_models.get("model")
+    processor = ml_models.get("processor")
+    if model is None or processor is None:
+        raise HTTPException(status_code=503, detail="Model not loaded yet")
+    return {"status": "healthy", "device": str(model.device)}
+
+
 if __name__ == "__main__":
     import uvicorn
+
     # This runs the server when you execute the script directly
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    uvicorn.run(app, host="0.0.0.0", port=8080)

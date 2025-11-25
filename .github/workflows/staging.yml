@@ -38,9 +38,8 @@ jobs:
 
       - name: Download Model
         run: |
-          huggingface-cli download ${{ env.HF_MODEL_ID }} \
+          hf download ${{ env.HF_MODEL_ID }} \
             --local-dir ./model \
-            --local-dir-use-symlinks False \
             --exclude "*.git*" "README.md"
 
       - name: Validate Model

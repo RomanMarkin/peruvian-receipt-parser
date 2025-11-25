@@ -120,7 +120,7 @@ resource "aws_lb_target_group" "app" {
   vpc_id      = module.vpc.vpc_id
 
   health_check {
-    path = "/docs" # FastAPI docs page returns 200 OK
+    path = "/health"
     matcher = "200"
   }
 }

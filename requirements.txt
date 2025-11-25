@@ -1,12 +1,12 @@
 # Requires Python 3.12
 
-# --- Core Web Service ---
+# Web service
 fastapi==0.115.0
 uvicorn[standard]==0.34.0
 python-multipart==0.0.12
 boto3==1.35.0
 
-# --- Machine Learning Inference ---
+# ML interface
 torch==2.5.1 --index-url https://download.pytorch.org/whl/cpu
 numpy<2.0
 transformers==4.46.0
