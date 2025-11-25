@@ -114,7 +114,7 @@ resource "aws_lb" "main" {
 
 resource "aws_lb_target_group" "app" {
   name        = "${var.project_name}-tg"
-  port        = 80
+  port        = 8080
   protocol    = "HTTP"
   target_type = "ip"
   vpc_id      = module.vpc.vpc_id
@@ -148,8 +148,8 @@ resource "aws_security_group" "ecs_sg" {
 
   # Only allow traffic from the Load Balancer (High Security)
   ingress {
-    from_port       = 8000
-    to_port         = 8000
+    from_port       = 8080
+    to_port         = 8080
     protocol        = "tcp"
     security_groups = [aws_security_group.alb_sg.id]
   }
@@ -182,9 +182,9 @@ resource "aws_ecs_task_definition" "app" {
   container_definitions = jsonencode([
     {
       name      = "app"
-      image     = "${aws_ecr_repository.repo.repository_url}:latest"
+      image     = "${aws_ecr_repository.repo.repository_url}"
       essential = true
-      portMappings = [{ containerPort = 8000, hostPort = 8000 }]
+      portMappings = [{ containerPort = 8080, hostPort = 8080 }]
 
       # Pass S3 Bucket Name to Python
       environment = [
@@ -218,7 +218,7 @@ resource "aws_ecs_service" "main" {
   load_balancer {
     target_group_arn = aws_lb_target_group.app.arn
     container_name   = "app"
-    container_port   = 8000
+    container_port   = 8080
   }
 
   depends_on = [aws_lb_listener.http]
