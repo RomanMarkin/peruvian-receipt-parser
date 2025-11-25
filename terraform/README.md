@@ -199,3 +199,9 @@ In case you need to destroy infrastructure:
     terraform apply \
       -var-file="../../common.tfvars" \
       -var-file="production.tfvars"
+
+In case you need to destroy infrastructure:
+
+    terraform destroy \
+      -var-file="../../common.tfvars" \
+      -var-file="production.tfvars"
