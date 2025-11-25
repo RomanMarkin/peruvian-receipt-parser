@@ -1,4 +1,18 @@
-Permissions for deployment user:
+# Infrastructure Provision in AWS
+
+### Use global Terraform cache on your local machine (Optional)
+To prevent Terraform cache duplication in each module directory, you can optionally do:
+
+    mkdir -p $HOME/.terraform.d/plugin-cache
+    echo "plugin_cache_dir = \"$HOME/.terraform.d/plugin-cache\"" > ~/.terraformrc
+
+### Create AWS Profile
+Create an AWS profile for the user running the Terraform deployment. Name the profile `donat-deploy` (as referenced in `common.tfvars`).
+
+    aws configure --profile donat-deploy
+
+### Add permissions to the AWS deployment user
+IAM → Users → (select user) → Permissions tab → Add inline policy → JSON
 
     {
         "Version": "2012-10-17",
@@ -67,6 +81,7 @@ Permissions for deployment user:
                     "ecr:UploadLayerPart",
                     "ecr:CreateRepository",
                     "ecr:DescribeRepositories",
+                    "ecr:DescribeImages",
                     "ecr:ListTagsForResource",
                     "ecr:DeleteRepository",
                     "ecr:PutImage",
@@ -155,3 +170,32 @@ Permissions for deployment user:
             }
         ]
     }
+
+## Create global project infrastructure (for both production and staging environments) 
+    
+    cd ./peruvian-receipt-parser/terraform/global  
+    terraform init       
+    terraform apply \
+      -var-file="../common.tfvars"
+
+## Create staging infrastructure 
+    
+    cd ./peruvian-receipt-parser/terraform/environments/staging
+    terraform init
+    terraform apply \
+      -var-file="../../common.tfvars" \
+      -var-file="staging.tfvars"
+
+In case you need to destroy infrastructure:
+
+    terraform destroy \
+      -var-file="../../common.tfvars" \
+      -var-file="staging.tfvars"
+
+## Create production infrastructure 
+    
+    cd ./peruvian-receipt-parser/terraform/environments/production
+    terraform init
+    terraform apply \
+      -var-file="../../common.tfvars" \
+      -var-file="production.tfvars"
