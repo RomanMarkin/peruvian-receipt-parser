@@ -1,12 +1,12 @@
 # --- Outputs for app usage ---
 output "api_base_url" {
   description = "The public URL of the Load Balancer"
-  value       = "http://${module.production.api_base_url}"
+  value       = module.production.api_base_url
 }
 
 output "api_docs_url" {
   description = "App documentation URL"
-  value       = "http://${module.production.api_docs_url}/docs"
+  value       = module.production.api_docs_url
 }
 
 output "s3_bucket_name" {
